@@ -1,0 +1,295 @@
+$primary_color: #b1b3be;
+$secondary_color: #eee;
+$menu_height: 80px;
+$side_menu_width: 150px;
+$menu_padding: 30px;
+
+$menu_background: #2B2E39;
+$menu_background_full: #14141C;
+
+$menu_border_color: #ccc;
+
+$menu_item_padding: 15px;
+
+$toggle_index: 5001;
+$menu_index: 5000;
+
+// Screen size
+$max_xs: 575px;
+$max_sm: 767px;
+$max_md: 991px;
+$max_lg: 1199px;
+
+$break-compact: $max_sm;
+
+@mixin display-mode($media) {
+    @if $media == compact {
+        @media only screen and (max-width: $break-compact) {
+            @content
+        }
+    }
+    @else if $media == full {
+        @media only screen and (min-width: $break-compact + 1) {
+            @content
+        }
+    }
+}
+// ------------------------------------------------------------------- MENU ---------------------------------------------------------------- //
+.onav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: $menu_height;
+    // Aesthetic
+    padding: 0px $menu_padding;
+    vertical-align: middle;
+    background: $menu_background_full;
+    font-family: cursive;
+    
+    a {
+        color: $primary_color;
+        text-decoration: none;
+        font-size: 16px;
+    }
+}
+
+// ------------------------------------------------------------------- BRAND / LOGO ---------------------------------------------------------------- //
+.onav-brand {
+    position: relative;
+    padding-top:$menu_padding;
+    padding-top: 32px;
+    float: left;
+    width: 150px;
+    font-weight: bold;
+}
+
+
+// ------------------------------------------------------------------- HAMBURGER TOGGLE ---------------------------------------------------------------- //
+input[type="checkbox"].onav-toggle-checkbox {
+    display: none;
+    
+    @include display-mode(compact) {
+        &:checked + label {
+            right: $menu_padding;
+        }
+
+        &:checked + label span {
+        }
+
+        &:checked + label span.onav-burger-1 {
+            transform: rotate(-135deg);
+            -webkit-transform: rotate(-135deg);
+            top: 6px;
+        }
+
+
+        &:checked + label span.onav-burger-2 {
+            transform: scale(0.1,1);
+            -webkit-transform: scale(0.1,1);
+            opacity: 0;
+        }
+
+        &:checked + label span.onav-burger-3 {
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+            top: -6px;
+        }
+
+        &:checked ~ .onav-main {
+            transform: translate(0,0);
+        }
+
+        &:checked ~ .onav-overlay {
+            display: block;
+            position: fixed;
+            top:0;
+            right:0;
+            bottom:0;
+            left:0;
+            background: $menu_background;
+            opacity: 0.7;
+        }
+    }
+}
+
+.onav-toggle {
+    @include display-mode(compact) {
+        position: absolute;
+        padding-top: 9px;
+        top: $menu_padding;
+        right: $menu_padding;
+        //border: 1px solid $primary_color;
+        //border-radius: 2px;
+        cursor: pointer;
+        z-index: $toggle_index;
+        background: transparent;
+    }
+
+    @include display-mode(full) {
+        display: none;
+    }
+}
+
+.onav-burger {
+    display: block;
+    position: relative;
+    width: 22px;
+    height: 3px;
+    border-radius: 1px;
+    background: $primary_color;
+    margin: 3px 0;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+}
+
+// ------------------------------------------------------------------- MAIN MENU ---------------------------------------------------------------- //
+.onav-main {
+    z-index: $menu_index;
+    height: $menu_height;
+
+    ul {
+        list-style: none;
+        padding: 0;
+        right: 0;
+    }
+
+    @include display-mode(compact) {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: $side_menu_width;
+        // Aesthetic
+        background: $menu_background;
+        padding: $menu_padding;
+        padding-top: $menu_height + $menu_padding/2;
+        transform: translate(350px,0);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    @include display-mode(full) {
+        background: $menu_background_full;
+    }
+}
+
+ul.onav-menu {
+    @include display-mode(compact) {
+        > li {
+            margin-top: 20px;
+        }
+    }
+
+    @include display-mode(full) {
+        display: inline-block;
+        margin-bottom: 0;
+
+        > li {
+            display: inline-block;
+            padding-left: $menu_item_padding;
+            padding-right: $menu_item_padding;
+        }
+    }
+}
+
+ul.onav-menu > li {
+    @include display-mode(full) {
+        height: 32px;
+        padding-top: 18px;
+    }
+
+    > a {
+        font-weight: bold;
+    }
+}
+
+ul.onav-right {
+    @include display-mode(compact) {
+        margin-top: $menu_padding/2;
+    }
+
+    @include display-mode(full) {
+        float: right;
+    }
+}
+
+
+// ------------------------------------------------------------------- SUB MENU ---------------------------------------------------------------- //
+li.onav-dropdown {
+    @include display-mode(full) {
+        position: relative;
+
+        &:hover {
+            background: $menu_background;
+            cursor: pointer;
+        }
+
+        &:hover .onav-submenu {
+            display: table;
+            transform: translate(0,0);
+        }
+    }
+}
+
+ul.onav-submenu {
+
+    @include display-mode(full) {
+        display: table;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 175px;
+        // Aesthetic
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: $menu_background_full;
+        transform: translate(0,-180px);
+        z-index: -1;
+        transition: transform 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
+    }   
+    
+    li {
+        @include display-mode(compact) {
+            padding-left: $menu_item_padding;
+        }
+        
+        @include display-mode(full) {
+            padding: $menu_item_padding;
+
+            &:hover {
+                background-color: $menu_background;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+
+// ------------------------------------------------------------------- OTHERS ---------------------------------------------------------------- //
+.onav-caret {
+    @include display-mode(compact) {
+        display: none;
+    }
+    @include display-mode(full) {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-left: 2px;
+        border-top: 4px solid;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+    }
+}
+
+.onav-background {
+    height: $menu_height;
+    display:block;
+}
+
+.onav-overlay {
+    display:none;
+}
