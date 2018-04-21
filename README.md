@@ -8,6 +8,7 @@ Since Javascript is overkilled, I created a CSS toggle with checkbox+label and a
 Feel free to download the code and try yourself.
 
 Cheers,
+
 Harry
 
 
